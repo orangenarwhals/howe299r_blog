@@ -75,19 +75,6 @@ pagination_dir: page
 theme: cactus
 #theme: landscape
 
-nav:
-  Home: /
-  About: /about/
-  Blog: /archives/
-  Search: /search/
-  #Projects: http://github.com/gabithume
-  #LINK_NAME: URL
-     
-
-customize:
-  show_all_posts: true
-  #highlight: tomorrow-night
-
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
