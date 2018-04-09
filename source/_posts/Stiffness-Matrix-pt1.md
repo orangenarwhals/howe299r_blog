@@ -3,7 +3,6 @@ author: N Ouyang
 date: 2018-04-08 05:55:56
 tags:
 ---
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
 $$ $$
 
 ## Motivation
@@ -89,7 +88,7 @@ Max forces at each x position before triple beam bottoms out (note that off-axis
 
 I collected data in intervals of 20 grams, three times at each position.
 
-### Post processing data
+### Post-Process Data 
 
 I took two data point for each force, one with no force applied as a "zero" calibration measurement to account for IMU instability over time, and one of the IMU sensor reading right after applying force (once the system stabilizes and the readings become constant).
 
@@ -99,7 +98,7 @@ I did not use the x,y,z nor distance measurements from the IMU. I only used the 
 
 ## Math
 
-### 1d case
+### 1D Case 
 
 In the one-axis case, the math is straightforward.
 
@@ -110,25 +109,28 @@ In the one-axis case, the math is straightforward.
 For example, one datapoint might be
 
 \begin{align}
-k &= F / \tau \\\\
-k &= (20g \times 9.8 m/s^2) / 0.1 \text{ degrees}
+k &= F / \tau \\
+k &= (20g \times 9.8 m/s^2)\,/\,0.1 \text{ degrees}
 \end{align}
 
 where `k` represents the stiffness of the finger. Let `c` represent the inverse of `k`.
 
-Using least squares error, we may fit a line to find `c`. Let `b` be a constant determined by the line of fit.
+Using least squares error, we may fit a line to find $\hat{c}$. 
+
 \begin{align}
- \hat{c} &= \frac{1}{\hat{k}} \\\\
+ \hat{c} &= \frac{1}{\hat{k}} \\
  \theta &= \tau \hat{c} + b
 \end{align}
 
-#### Residuals
+where `b` be a constant determined by the line of fit.
+
+### Residuals
 
 From the above, we may calculate the residuals of any of our estimated variables.
 For instance, from our actual data we may obtain an estimate for `k`.
 
 \begin{align}
- \tau_{data} &= \hat{k} \cdot \theta_{data} \\\\
+ \tau_{data} &= \hat{k} \cdot \theta_{data} \\
 \end{align}
 
 Using this k we can go back and calculate estimates for the "true" torque, assuming our linear model was correct.
@@ -140,7 +142,7 @@ Using this k we can go back and calculate estimates for the "true" torque, assum
 We would then calculate our torque residuals as
 
 \begin{align}
- \epsilon = \hat{\tau} - \tau 
+ \epsilon_{\tau} = \hat{\tau} - \tau 
 \end{align}
 
 If we plot a graph of (torque residuals) vs (estimate residuals) and find that our points are randomly scattered around a straight line, then our model well-approximates reality as sensed by a noisy sensor.
@@ -156,11 +158,24 @@ and so forth.
 We may eventually use machine learning techniques such as logistic regression with basis functions in order to fit such higher order terms, if needed. Or perhaps we will not need to.
 
 
-### 3d case
+###  3D case
 
-blah blah
+The 3d case is exactly the same, except now each of the variables are vectors / matrices. 
 
-## First round of data
+\begin{align}
+\[ \vec{\tau} \ ]_{3xn}  = \[ k \]_{3x3} \cdot \[ \vec{\theta} \]_{3xn}
+\end{align}
+
+where
+
+\begin{align}
+\tau &= \[ \stackrel{3x1}{\tau_1} | \stackrel{3x1}{\tau_2} | ... |\stackrel{3x1}{\tau_n} \] \\
+\\
+\theta &= \[ \stackrel{3x1}{\theta_1} | \stackrel{3x1}{\theta_2} | ... |\stackrel{3x1}{\theta_n} \]
+\end{align}
+
+
+## First Round of Data 
 
 
 ### Graph
@@ -180,9 +195,120 @@ From this graph we get that
 
 We see that the IMU appears to create a very accurate linear line, as the average squared deviation is on the order of a tenth of a degree. 
 
-### Sanity Check
+### 2D Sanity Check
+
+We can run "forward" and "backward" calculations as a sanity check. We have $\hat {k} = \frac{1}{0.00678065} =  147.5$ from our above least squares line. We can also plug in an individual datapoint, for instance (100 gram cm, 2.85 deg, at position 2 i.e. with no off-axis torque terms), and see that 4.6cm * 100g = 460 g cm. Dividing by 2.85 deg, we get approximately 150 g cm / deg, which matches $\hat{k}.
+
+( Note: I have no idea if this is a reasonable stiffness (well, 1/stiffness) estimate in terms of absolute real-life estimates. )
 
 
+### 3D Sanity Check: Simplify to 2D case 
+
+We know that $\tau = r \times F$
+\begin{align}
+\begin{bmatrix}
+    \tau_{x}       \\
+    \tau_{y}       \\
+    \tau_{z}       \\
+\end{bmatrix} =
+\Bigg[ \; K \; \Bigg]_{3x3}  \;
+\begin{bmatrix}
+    \theta_{x}       \\
+    \theta_{y}       \\
+    \theta_{z}       \\
+\end{bmatrix} \\
+\end{align}
+
+Further, we can use some of the simplifying assumptions we made about to model our system, in order to have an idea of what values our math should result in for $k$.
+
+We may also see that we will only ever have x and y components for $r$; z components for $F$; and thereforce (by how cross products work) only ever have x and y components for $\tau$.
+
+**Off-axis**
+\begin{align}
+r \approx
+\begin{bmatrix}
+    r_x       \\
+    r_y       \\
+    0       \\
+\end{bmatrix} \; \times \;
+f \approx
+\begin{bmatrix}
+    0       \\
+    0       \\
+    f_z      \\
+\end{bmatrix} \; =  \; \tau \; = 
+\begin{bmatrix}
+    \tau_x       \\
+    \tau_y       \\
+    0      \\
+\end{bmatrix}\\
+\end{align}
+
+
+**On-Axis**
+In the even more simplified case, if we do not apply the force off-axis and there is only a pitch
+deflection
+
+\begin{align}
+r \approx
+\begin{bmatrix}
+    r_x       \\
+    0       \\
+    0       \\
+\end{bmatrix} \; \times \;
+f \approx
+\begin{bmatrix}
+    0       \\
+    0       \\
+    f_z      \\
+\end{bmatrix} \; =  \; \tau \; = 
+\begin{bmatrix}
+    0 \\
+    \tau_y       \\
+    0      \\
+\end{bmatrix}\\
+\end{align}
+
+We **will** have enough nonzero values for the xyz components of $\theta$ that we will be able to calculate a nondegenerate estimate for $k$. This is thanks to applying the force off-axis, causing the finger to roll and create non-zero elements for $\theta_y$ ( our roll) and $\theta_z$ (our yaw).
+
+### 3D Sanity Case: Pick datapoints with $\approx 0$ values
+
+We can selectively pick datapoints which have tiny values in some components and check that the
+resulting $\hat{K}$ matrix is as we expect.
+
+###  Further Sanity Checks
+ 
+We can also make sure that for off-axis forces on either side of the finger, one should be positive and one negative, and they should be roughly the same order magnitude. 
+
+Note that, because pos 1 is +4mm but  pos 3 is only -2mm, thus $ | \theta_{pos3} |$ should be less than $ | \theta_{pos1} | $.
+
+
+
+
+
+## Notes
+
+* I somewhat tried to stick to the convention of "uppercase" letters for matrices, lowercase for constants and vectors, hats for estimates, and vector signs for well, vectors.  
+But not really, because I got lazy.
+
+* There was a brief explanation of how, if the residuals are plotted against the actual data, then we would expect a slight upward linear trend in the resulting datapoints. TODO: look into the statistics behind this. What we actually want is the residuals plotted against our estimates. That is, if we are looking at the torque residuals,  
+\begin{align}
+    \vec{\epsilon}_\tau = \vec{\tau}_{\text{calculated}} - \hat{\vec{\tau}}_{\text{estimated from } k\theta}
+\end{align}
+We want to plot 
+  * $\epsilon_\tau$ vs. $\tau_{\text{estimated from }k\theta}$ and NOT 
+  * $\epsilon_\tau$ vs. $\tau_{\text{calculated}}$
+
+  * Note: $\tau_{\text{calculated}}$ is taken directly from the xyz position and the force we applied to get our datapoint.
+\begin{align}
+    \vec{\tau}_{\text{calculated}} = \vec{r}_{data} \times \vec{F}_{data}
+\end{align}
+  * Note: Then from fitting a line vs the deflections (that we also physically measured) we then
+  derived a $\hat{K}$.  We then take this $\hat{K}$ and multiply against the deflections
+  $\theta_{data}$ to work out our $\hat{\tau}_{\text{estimated from }k\theta}$.
+
+
+## MathJax Test 
 <!--
 $$
 
