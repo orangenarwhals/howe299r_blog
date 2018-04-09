@@ -44,10 +44,11 @@ Here we are making a few simplifying assumptions:
 
 Coordinates
 ```bash
-+ y (pitch)
-^
-|
 ----> + x (roll)
+|
+|
+v
++ y (pitch)
 
 + z (up out of page) (yaw)
 ```
@@ -177,6 +178,9 @@ where
 
 ## First Round of Data 
 
+
+I analyzed the y components (yaw components) only, with a single repeat per force application per
+position, for all 3 or 4 positions I collected. See plot below.
 
 ### Graph
 ![torque vs deflection](/researchblog/images/temp-plot.png)
