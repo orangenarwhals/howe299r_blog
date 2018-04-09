@@ -273,8 +273,7 @@ We **will** have enough nonzero values for the xyz components of $\theta$ that w
 
 ### 3D Sanity Case: Pick datapoints with $\approx 0$ values
 
-We can selectively pick datapoints which have tiny values in some components and check that the
-resulting $\hat{K}$ matrix is as we expect.
+We can selectively pick datapoints which have tiny values in some components and check that the resulting $\hat{K}$ matrix is as we expect.
 
 ###  Further Sanity Checks
  
@@ -303,8 +302,6 @@ We want to plot
 \begin{align}
     \vec{\tau}_{\text{calculated}} = \vec{r}_{data} \times \vec{F}_{data}
 \end{align}
-  * Note: Then from fitting a line vs the deflections (that we also physically measured) we then
-  derived a $\hat{K}$.  We then take this $\hat{K}$ and multiply against the deflections
-  $\theta_{data}$ to work out our $\hat{\tau}_{\text{estimated from }k\theta}$.
+  * Note: Then from fitting a line vs the deflections (that we also physically measured) we then derived a $\hat{K}$.  We then take this $\hat{K}$ and multiply against the deflections $\theta_{data}$ to work out our $\hat{\tau}_{\text{estimated from }k\theta}$ 
 
-## end
+## the end.
