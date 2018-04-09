@@ -4,8 +4,7 @@ date: 2018-04-08 08:18:44
 tags:
 ---
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML' async></script>
-
-
+$$ $$
 \begin{eqnarray}
 \nabla\cdot\vec{E} &=& \frac{\rho}{\epsilon_0} \\
 \nabla\cdot\vec{B} &=& 0 \\
