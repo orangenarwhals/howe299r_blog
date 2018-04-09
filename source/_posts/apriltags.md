@@ -3,7 +3,8 @@ tags: []
 categories: []
 date: 2018-04-08 01:54:00
 ---
-I recently started working with April tags, since they seem cool & you see them all over the place (using as fiducials for robots trying to walk around a somewhat unstructured environment).
+
+I recently started working with April tags, since they seem cool & you see them all over the place (used as fiducials for robots trying to walk around a somewhat unstructured environment).
 
 ![Boston Dynamics, Atlas robot, picking up a box with an apriltag](/researchblog/images/boston_dynamics_atlas_apriltags.png)
 
@@ -48,7 +49,7 @@ Next,
 
 * Print out tag
 * Run 
-```
+```bash
 ./build/bin/apriltags_demo`
 ```
 
@@ -56,7 +57,7 @@ Now stick the tag in front of your camera. In the videostream you should now see
 
 The data display shows distance (from the camera to the tag), the xyz location of the center of the tag, as well as the roll, pitch, and yaw. These coordinates will depend on which side you put pointing up when you pasted the tag on, so beware.  In fact, none of the data should be taken as absolute until you calibrate your camera.
 
-```
+```bash
 2 tags detected: 
 Id: 1 (Hamming: 0) distance=0.079741m, x=0.000532, y=0.006102, z=-1.487915, yaw=-0.134615, pitch=0.071828, roll=-0.041146
 Id: 7 (Hamming: 0) distance=0.079741m, x=0.000532, y=0.006102, z=-1.487915, yaw=-0.134615, pitch=0.071828, roll=-0.041146
@@ -79,7 +80,7 @@ https://github.com/smidm/video2calibration
 
 To get it working, I did have to make sure I had pyyaml installed
 
-```
+```bash
 (venv) nrw@earlgrey:$ sudo -H pip install pyyaml --upgrade
 ```
 
@@ -118,7 +119,7 @@ Performing calibration...
 
 Edit into the demo file
 
-```
+```bash
 nrw@earlgrey:~/projects/apriltags/example$ vi apriltags_demo.cpp
 ```
 
@@ -143,13 +144,13 @@ public:
 Ah! I forgot, we also needed to measure, using a ruler (or calipers), the size of the apriltag in real life. So just measure one of the sides of the tag (which should be square...) and put it inoto m_tagSize. (The width and height should be the size in pixels of the image from the video camera).
 
 Compile and run (use "make clean" if the build fails, then run "make" again)
-```
+```bash
 nrw@earlgrey:~/projects/apriltags/example$ cd ..
 nrw@earlgrey:~/projects/apriltags/example$ make
 ```
 
 Then run the program:
-```
+```bash
 nrw@earlgrey:~/projects/apriltags/$ ./build/bin/apriltag_demo
 ```
 
@@ -188,20 +189,19 @@ Id: 15 (Hamming: 1)Aborted (core dumped)
 ```
 It turned out that because I had ROS installed, or perhaps also because I installed the "apriltags" ROS wrapper, I was having openCV version conflicts.
 
-```
+```bash
 /tmp/binarydeb/ros-lunar-opencv3-3.3.1
 ```
 
 vs
-```
-
+```bash
 rw@earlgrey:~$ pkg-config --modversion opencv
 	2.4.9.1
 ```
 
 To solve, I simply had to edit one line in the CMakeLists.txt to force it to use the right version of openCV. I added an "exact required" tag, along with my openCV version (2.4.9.1), to the appropriate line.
 
-```
+```bash
 nrw@earlgrey:~/projects/apriltags$ vi CMakeLists.txt 
 	(line 14)
 	find_package(OpenCV 2.4.9.1 EXACT REQUIRED)
@@ -209,7 +209,7 @@ nrw@earlgrey:~/projects/apriltags$ vi CMakeLists.txt
 
 Then I ran "make" and then the program itself
 
-```
+```bash
 nrw@earlgrey:~/projects/apriltags/$ ./build/bin/apriltag_demo
 ```
 
