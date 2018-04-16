@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="+ x (roll) | | v + y (pitch)  + z (up out of page) (yaw)  Zeros defined as: x: tip of proximal joint y: center of proximal joint z: neutral axis  Points 13 through 15 are at x=2.6 cm, and each x is s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Math happens:  Stiffness matrix, residuals, and more">
+<meta property="og:url" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/index.html">
+<meta property="og:site_name" content="2018 Howe 299r Research Blog">
+<meta property="og:description" content="+ x (roll) | | v + y (pitch)  + z (up out of page) (yaw)  Zeros defined as: x: tip of proximal joint y: center of proximal joint z: neutral axis  Points 13 through 15 are at x=2.6 cm, and each x is s">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/torq_vs_pitch.png">
+<meta property="og:updated_time" content="2018-04-16T01:44:17.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Math happens:  Stiffness matrix, residuals, and more">
+<meta name="twitter:description" content="+ x (roll) | | v + y (pitch)  + z (up out of page) (yaw)  Zeros defined as: x: tip of proximal joint y: center of proximal joint z: neutral axis  Points 13 through 15 are at x=2.6 cm, and each x is s">
+<meta name="twitter:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/torq_vs_pitch.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/howe299r_blog/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/howe299r_blog/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/howe299r_blog/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Math happens:  Stiffness matrix, residuals, and more</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/howe299r_blog/css/style.css">
+    <!-- rss -->
+    
+    
+<link rel="stylesheet" href="/howe299r_blog/css/prism-tomorrow.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body class="max-width mx-auto px3">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/howe299r_blog/2018/04/08/Data-Analysis/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&text=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&is_video=false&description=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Math happens:  Stiffness matrix, residuals, and more&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&name=Math happens:  Stiffness matrix, residuals, and more&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Motivation"><span class="toc-number">1.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Assumptions"><span class="toc-number">2.</span> <span class="toc-text">Assumptions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Setup-coordinates"><span class="toc-number">3.</span> <span class="toc-text">Setup (coordinates)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment"><span class="toc-number">4.</span> <span class="toc-text">Experiment</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Post-Process-Data"><span class="toc-number">4.1.</span> <span class="toc-text">Post-Process Data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Math"><span class="toc-number">5.</span> <span class="toc-text">Math</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1D-Case"><span class="toc-number">5.1.</span> <span class="toc-text">1D Case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Residuals"><span class="toc-number">5.2.</span> <span class="toc-text">Residuals</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-case"><span class="toc-number">5.3.</span> <span class="toc-text">3D case</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#First-Round-of-Data"><span class="toc-number">6.</span> <span class="toc-text">First Round of Data</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Graph"><span class="toc-number">6.1.</span> <span class="toc-text">Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2D-Sanity-Check"><span class="toc-number">6.2.</span> <span class="toc-text">2D Sanity Check</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Sanity-Check-Simplify-to-2D-case"><span class="toc-number">6.3.</span> <span class="toc-text">3D Sanity Check: Simplify to 2D case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Sanity-Case-Pick-datapoints-with-approx-0-values"><span class="toc-number">6.4.</span> <span class="toc-text">3D Sanity Case: Pick datapoints with $\approx 0$ values</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Further-Sanity-Checks"><span class="toc-number">6.5.</span> <span class="toc-text">Further Sanity Checks</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Notes"><span class="toc-number">7.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#the-end"><span class="toc-number">8.</span> <span class="toc-text">the end.</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Math happens:  Stiffness matrix, residuals, and more
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">N Ouyang</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-04-08T09:55:56.000Z" itemprop="datePublished">2018-04-08</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css"><div class=".article-gallery" <p="">In this post I’ll write down some of the mathematical reasoning going into my plots.<p></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>In grasp stability, we often use a friction cone model where if our forces are outside the friction cone, slip occurs and our grasp is consider unstable. In order to determine the friction cone, we need nine variables: the xyz of the contact force, contact location, and force normals (how much force is applied tangentially vs perpendicularly). </p>
+<p>We have determined that the three pressure sensors on the finger by themselves are not sufficient in and of themselves to give us all nine datapoints – using data from them alone, we are not able to distinguish marginal cases, where given the same starting position of the grasper relative to the object, sometimes the object is grasped without slip and sometimes the object falls. </p>
+<p>Therefore we would like to add more sensors in order to resolve these unknowns. We would like a force contact location sensor. Although there is a 6 axis force torque sensor, it costs multiple thousands of dollars and is finicky and fragile. Thus, we would like to see if we can estimate force and torque from an IMU instead.</p>
+<h2 id="Assumptions"><a href="#Assumptions" class="headerlink" title="Assumptions"></a>Assumptions</h2><p>Based on the results from the previous analysis, we can say that the IMU seems fairly reasonably precise, with very small mean errors from the least-squares fit line.</p>
+<p>(The error could come from both sensor noise and from a mismatch between our simplifed model and reality in terms of the bending of the finger).</p>
+<p>Here we are making a few simplifying assumptions:</p>
+<ol>
+<li>There is a linear relationship between force and deflection, or alternatively torque and angle of deflection</li>
+<li>The center of the axis of rotation was at the tip of the proximal joint<br>(in reality, likely it is two or three mm shifted outward, and changes as the flex increases)</li>
+<li>We consider the z axis to be defined respect to the surface of the finger, so that z=0 is always at the tip of the finger</li>
+</ol>
+<h2 id="Setup-coordinates"><a href="#Setup-coordinates" class="headerlink" title="Setup (coordinates)"></a>Setup (coordinates)</h2><pre class=" language-bash"><code class="language-bash"><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>      <span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>.
+ <span class="token punctuation">{</span>CL<span class="token punctuation">}</span>  <span class="token operator">||</span> --- <span class="token operator">||</span> 15  12  9  6  3 <span class="token operator">||</span>
+ <span class="token punctuation">{</span>A<span class="token punctuation">}</span> <span class="token punctuation">[</span>xy<span class="token operator">=</span>0<span class="token punctuation">]</span>-- <span class="token operator">||</span> 14  11  8  5  2 <span class="token operator">||</span>
+ <span class="token punctuation">{</span>MP<span class="token punctuation">}</span>  <span class="token operator">||</span> --- <span class="token operator">||</span> 13  10  7  4  1 <span class="token operator">||</span>
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">=</span>      <span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>.
+
+
+  <span class="token punctuation">[</span><span class="token punctuation">[</span>---<span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token operator">||</span>  WEB  <span class="token operator">||</span>
+<span class="token operator">||</span>  CAM  <span class="token operator">||</span>
+  <span class="token operator">||</span>--- <span class="token operator">||</span>
+
+</code></pre>
+<p>Coordinates</p>
+<pre class=" language-bash"><code class="language-bash">----<span class="token operator">></span> + x <span class="token punctuation">(</span>roll<span class="token punctuation">)</span>
+<span class="token operator">|</span>
+<span class="token operator">|</span>
+<span class="token function">v</span>
++ y <span class="token punctuation">(</span>pitch<span class="token punctuation">)</span>
+
++ z <span class="token punctuation">(</span>up out of page<span class="token punctuation">)</span> <span class="token punctuation">(</span>yaw<span class="token punctuation">)</span>
+</code></pre>
+<p>Zeros defined as:</p>
+<pre class=" language-bash"><code class="language-bash">x: tip of proximal joint
+y: center of proximal joint
+z: neutral axis
+</code></pre>
+<p>Points 13 through 15 are at x=2.6 cm, and each x is spaced 5 mm apart.</p>
+<pre class=" language-bash"><code class="language-bash">xs <span class="token operator">=</span> <span class="token punctuation">[</span>4.6, 4.1, 3.5, 3.1, 2.6<span class="token punctuation">]</span>
+</code></pre>
+<p>Because there is a mold line going down the center of the finger, thus our center points (positions 14 … 2)  are at y = 0.1cm. Note also that the other two y positions are not equidistant from y=0.</p>
+<pre class=" language-bash"><code class="language-bash">ys <span class="token operator">=</span> <span class="token punctuation">[</span>0.4, 0.1, -0.2<span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true">## ys = [0.4, 0, -0.2]   </span>
+</code></pre>
+<p>In terms of applicability to real life, we are also assuming that we can zero the sensors right before grasping the object and then hold it still for a second in order to obtain our reading and thereby deduce our parameters.</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>The previous round of data collection was at small deflections. After discovering that the stop at the end of the triple beam balance, I was able to roughly double the amount of force I could apply to the finger before hitting the end of the triple beam balance.</p>
+<p>Max forces at each x position before triple beam bottoms out (note that off-axis measurements reduce the max force I can apply)</p>
+<pre class=" language-bash"><code class="language-bash">140g
+160 to 180g
+200g
+240g
+300g
+</code></pre>
+<p>I collected data in intervals of 20 grams, three times at each position.</p>
+<h3 id="Post-Process-Data"><a href="#Post-Process-Data" class="headerlink" title="Post-Process Data"></a>Post-Process Data</h3><p>I took two data point for each force, one with no force applied as a “zero” calibration measurement to account for IMU instability over time, and one of the IMU sensor reading right after applying force (once the system stabilizes and the readings become constant).</p>
+<p>Thus, to get the actual datapoints I subtracted the second reading from the first.</p>
+<p>I did not use the x,y,z nor distance measurements from the IMU. I only used the rotation measurements for roll, pitch, and yaw.</p>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><h3 id="1D-Case"><a href="#1D-Case" class="headerlink" title="1D Case"></a>1D Case</h3><p>In the one-axis case, the math is straightforward.</p>
+<p>\begin{align}<br>\tau = k \times F<br>\end{align}</p>
+<p>For example, one datapoint might be</p>
+<p>\begin{align}<br>k &amp;= F / \tau \<br>k &amp;= (20g \times 9.8 m/s^2)\,/\,0.1 \text{ degrees}<br>\end{align}</p>
+<p>where <code>k</code> represents the stiffness of the finger. Let <code>c</code> represent the inverse of <code>k</code>.</p>
+<p>Using least squares error, we may fit a line to find $\hat{c}$. </p>
+<p>\begin{align}<br> \hat{c} &amp;= \frac{1}{\hat{k}} \<br> \theta &amp;= \tau \hat{c} + b<br>\end{align}</p>
+<p>where <code>b</code> be a constant determined by the line of fit.</p>
+<h3 id="Residuals"><a href="#Residuals" class="headerlink" title="Residuals"></a>Residuals</h3><p>From the above, we may calculate the residuals of any of our estimated variables.<br>For instance, from our actual data we may obtain an estimate for <code>k</code>.</p>
+<p>\begin{align}<br> \tau_{data} &amp;= \hat{k} \cdot \theta_{data} \<br>\end{align}</p>
+<p>Using this k we can go back and calculate estimates for the “true” torque, assuming our linear model was correct.</p>
+<p>\begin{align}<br> \hat{\tau} &amp;= \hat{k} \cdot \theta_{data}<br>\end{align}</p>
+<p>We would then calculate our torque residuals as</p>
+<p>\begin{align}<br> \epsilon_{\tau} = \hat{\tau} - \tau<br>\end{align}</p>
+<p>If we plot a graph of (torque residuals) vs (estimate residuals) and find that our points are randomly scattered around a straight line, then our model well-approximates reality as sensed by a noisy sensor.</p>
+<p>However, our residuals may instead follow a parabola, in which case we would want to amend our model to have higher order terms.</p>
+<p>\begin{align}<br> \hat{\tau} = \hat{k}\theta_{data} +c_1 \theta_{data} + c_2 \theta_{data}<br>\end{align}</p>
+<p>and so forth. </p>
+<p>We may eventually use machine learning techniques such as logistic regression with basis functions in order to fit such higher order terms, if needed. Or perhaps we will not need to.</p>
+<h3 id="3D-case"><a href="#3D-case" class="headerlink" title="3D case"></a>3D case</h3><p>The 3d case is exactly the same, except now each of the variables are vectors / matrices. </p>
+<p>\begin{align}<br>[ \vec{\tau} \ ]<em>{3xn}  = [ k ]</em>{3x3} \cdot [ \vec{\theta} ]_{3xn}<br>\end{align}</p>
+<p>where</p>
+<p>\begin{align}<br>\tau &amp;= [ \stackrel{3x1}{\tau_1} | \stackrel{3x1}{\tau_2} | … |\stackrel{3x1}{\tau_n} ] \<br>\<br>\theta &amp;= [ \stackrel{3x1}{\theta_1} | \stackrel{3x1}{\theta_2} | … |\stackrel{3x1}{\theta_n} ]<br>\end{align}</p>
+<h2 id="First-Round-of-Data"><a href="#First-Round-of-Data" class="headerlink" title="First Round of Data"></a>First Round of Data</h2><p>I analyzed the y components (yaw components) only, with a single repeat per force application per<br>position, for all 3 or 4 positions I collected. See plot below.</p>
+<h3 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h3><p><a href="torq_vs_pitch.png" title="torque vs deflection" class="gallery-item"><img src="torq_vs_pitch.png" alt="torque vs deflection"></a></p>
+<pre class=" language-bash"><code class="language-bash">Coefficients: 
+ <span class="token punctuation">[</span>-0.00678065<span class="token punctuation">]</span>
+Intercept: 
+ <span class="token punctuation">[</span>0.7679924242424274<span class="token punctuation">]</span>
+Mean squared error: 0.29
+</code></pre>
+<p>From this graph we get that<br>\begin{align}<br> \hat{c} &amp;= -0.00678065<br>\end{align}</p>
+<p>We see that the IMU appears to create a very accurate linear line, as the average squared deviation is on the order of a tenth of a degree. </p>
+<h3 id="2D-Sanity-Check"><a href="#2D-Sanity-Check" class="headerlink" title="2D Sanity Check"></a>2D Sanity Check</h3><p>We can run “forward” and “backward” calculations as a sanity check. We have $\hat {k} = \frac{1}{0.00678065} =  147.5$ from our above least squares line. We can also plug in an individual datapoint, for instance (100 gram cm, 2.85 deg, at position 2 i.e. with no off-axis torque terms), and see that 4.6cm * 100g = 460 g cm. Dividing by 2.85 deg, we get approximately 150 g cm / deg, which matches $\hat{k}.</p>
+<p>( Note: I have no idea if this is a reasonable stiffness (well, 1/stiffness) estimate in terms of absolute real-life estimates. )</p>
+<h3 id="3D-Sanity-Check-Simplify-to-2D-case"><a href="#3D-Sanity-Check-Simplify-to-2D-case" class="headerlink" title="3D Sanity Check: Simplify to 2D case"></a>3D Sanity Check: Simplify to 2D case</h3><p>We know that $\tau = r \times F$<br>\begin{align}<br>\begin{bmatrix}<br>    \tau_{x}       \<br>    \tau_{y}       \<br>    \tau_{z}       \<br>\end{bmatrix} =<br>\Bigg[ \; K \; \Bigg]<em>{3x3}  \;<br>\begin{bmatrix}<br>    \theta</em>{x}       \<br>    \theta_{y}       \<br>    \theta_{z}       \<br>\end{bmatrix} \<br>\end{align}</p>
+<p>Further, we can use some of the simplifying assumptions we made about to model our system, in order to have an idea of what values our math should result in for $k$.</p>
+<p>We may also see that we will only ever have x and y components for $r$; z components for $F$; and thereforce (by how cross products work) only ever have x and y components for $\tau$.</p>
+<p><strong>Off-axis</strong><br>\begin{align}<br>r \approx<br>\begin{bmatrix}<br>    r_x       \<br>    r_y       \<br>    0       \<br>\end{bmatrix} \; \times \;<br>f \approx<br>\begin{bmatrix}<br>    0       \<br>    0       \<br>    f_z      \<br>\end{bmatrix} \; =  \; \tau \; =<br>\begin{bmatrix}<br>    \tau_x       \<br>    \tau_y       \<br>    0      \<br>\end{bmatrix}\<br>\end{align}</p>
+<p><strong>On-Axis</strong><br>In the even more simplified case, if we do not apply the force off-axis and there is only a pitch<br>deflection</p>
+<p>\begin{align}<br>r \approx<br>\begin{bmatrix}<br>    r_x       \<br>    0       \<br>    0       \<br>\end{bmatrix} \; \times \;<br>f \approx<br>\begin{bmatrix}<br>    0       \<br>    0       \<br>    f_z      \<br>\end{bmatrix} \; =  \; \tau \; =<br>\begin{bmatrix}<br>    0 \<br>    \tau_y       \<br>    0      \<br>\end{bmatrix}\<br>\end{align}</p>
+<p>We <strong>will</strong> have enough nonzero values for the xyz components of $\theta$ that we will be able to calculate a nondegenerate estimate for $k$. This is thanks to applying the force off-axis, causing the finger to roll and create non-zero elements for $\theta_y$ ( our roll) and $\theta_z$ (our yaw).</p>
+<h3 id="3D-Sanity-Case-Pick-datapoints-with-approx-0-values"><a href="#3D-Sanity-Case-Pick-datapoints-with-approx-0-values" class="headerlink" title="3D Sanity Case: Pick datapoints with $\approx 0$ values"></a>3D Sanity Case: Pick datapoints with $\approx 0$ values</h3><p>We can selectively pick datapoints which have tiny values in some components and check that the resulting $\hat{K}$ matrix is as we expect.</p>
+<h3 id="Further-Sanity-Checks"><a href="#Further-Sanity-Checks" class="headerlink" title="Further Sanity Checks"></a>Further Sanity Checks</h3><p>We can also make sure that for off-axis forces on either side of the finger, one should be positive and one negative, and they should be roughly the same order magnitude. </p>
+<p>Note that, because pos 1 is +4mm but  pos 3 is only -2mm, thus $ | \theta_{pos3} |$ should be less than $ | \theta_{pos1} | $.</p>
+<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<li><p>I somewhat tried to stick to the convention of “uppercase” letters for matrices, lowercase for constants and vectors, hats for estimates, and vector signs for well, vectors.<br>But not really, because I got lazy.</p>
+</li>
+<li><p>There was a brief explanation of how, if the residuals are plotted against the actual data, then we would expect a slight upward linear trend in the resulting datapoints. TODO: look into the statistics behind this. What we actually want is the residuals plotted against our estimates. That is, if we are looking at the torque residuals,<br>\begin{align}<br>  \vec{\epsilon}<em>\tau = \vec{\tau}</em>{\text{calculated}} - \hat{\vec{\tau}}_{\text{estimated from } k\theta}<br>\end{align}<br>We want to plot </p>
+<ul>
+<li>$\epsilon_\tau$ vs. $\tau_{\text{estimated from }k\theta}$ and NOT </li>
+<li><p>$\epsilon_\tau$ vs. $\tau_{\text{calculated}}$</p>
+</li>
+<li><p>Note: $\tau_{\text{calculated}}$ is taken directly from the xyz position and the force we applied to get our datapoint.<br>\begin{align}<br>\vec{\tau}<em>{\text{calculated}} = \vec{r}</em>{data} \times \vec{F}_{data}<br>\end{align}</p>
+</li>
+<li>Note: Then from fitting a line vs the deflections (that we also physically measured) we then derived a $\hat{K}$.  We then take this $\hat{K}$ and multiply against the deflections $\theta_{data}$ to work out our $\hat{\tau}_{\text{estimated from }k\theta}$ </li>
+</ul>
+</li>
+</ul>
+<h2 id="the-end"><a href="#the-end" class="headerlink" title="the end."></a>the end.</h2></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Motivation"><span class="toc-number">1.</span> <span class="toc-text">Motivation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Assumptions"><span class="toc-number">2.</span> <span class="toc-text">Assumptions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Setup-coordinates"><span class="toc-number">3.</span> <span class="toc-text">Setup (coordinates)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment"><span class="toc-number">4.</span> <span class="toc-text">Experiment</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Post-Process-Data"><span class="toc-number">4.1.</span> <span class="toc-text">Post-Process Data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Math"><span class="toc-number">5.</span> <span class="toc-text">Math</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1D-Case"><span class="toc-number">5.1.</span> <span class="toc-text">1D Case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Residuals"><span class="toc-number">5.2.</span> <span class="toc-text">Residuals</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-case"><span class="toc-number">5.3.</span> <span class="toc-text">3D case</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#First-Round-of-Data"><span class="toc-number">6.</span> <span class="toc-text">First Round of Data</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Graph"><span class="toc-number">6.1.</span> <span class="toc-text">Graph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2D-Sanity-Check"><span class="toc-number">6.2.</span> <span class="toc-text">2D Sanity Check</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Sanity-Check-Simplify-to-2D-case"><span class="toc-number">6.3.</span> <span class="toc-text">3D Sanity Check: Simplify to 2D case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3D-Sanity-Case-Pick-datapoints-with-approx-0-values"><span class="toc-number">6.4.</span> <span class="toc-text">3D Sanity Case: Pick datapoints with $\approx 0$ values</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Further-Sanity-Checks"><span class="toc-number">6.5.</span> <span class="toc-text">Further Sanity Checks</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Notes"><span class="toc-number">7.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#the-end"><span class="toc-number">8.</span> <span class="toc-text">the end.</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&text=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&is_video=false&description=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Math happens:  Stiffness matrix, residuals, and more&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&title=Math happens:  Stiffness matrix, residuals, and more"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Stiffness-Matrix/&name=Math happens:  Stiffness matrix, residuals, and more&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 N Ouyang
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/howe299r_blog/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/howe299r_blog/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/howe299r_blog/lib/jquery/jquery.min.js"></script>
+<script src="/howe299r_blog/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/howe299r_blog/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

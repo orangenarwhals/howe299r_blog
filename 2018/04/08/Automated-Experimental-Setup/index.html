@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="grav = bno.getVector(Adafruit_BNO055::VECTOR_GRAVITY); // !!!!     //imu::Vector&amp;lt;3&amp;gt; linaccel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL); // !!!!     Serial.print(grav.x(), 4);  Reading20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automating the Experimental Setup">
+<meta property="og:url" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/index.html">
+<meta property="og:site_name" content="2018 Howe 299r Research Blog">
+<meta property="og:description" content="grav = bno.getVector(Adafruit_BNO055::VECTOR_GRAVITY); // !!!!     //imu::Vector&amp;lt;3&amp;gt; linaccel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL); // !!!!     Serial.print(grav.x(), 4);  Reading20">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/experimentalsetup03April2018.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/experimentalsetup03April2018.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/02Apr_setup3.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/02Apr_setup2.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/02Apr_setup1.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/torque_calc.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/scale_1g.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/IMU_finger.jpg">
+<meta property="og:updated_time" content="2018-04-16T01:44:17.951Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Automating the Experimental Setup">
+<meta name="twitter:description" content="grav = bno.getVector(Adafruit_BNO055::VECTOR_GRAVITY); // !!!!     //imu::Vector&amp;lt;3&amp;gt; linaccel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL); // !!!!     Serial.print(grav.x(), 4);  Reading20">
+<meta name="twitter:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/experimentalsetup03April2018.jpg">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/howe299r_blog/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/howe299r_blog/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/howe299r_blog/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Automating the Experimental Setup</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/howe299r_blog/css/style.css">
+    <!-- rss -->
+    
+    
+<link rel="stylesheet" href="/howe299r_blog/css/prism-tomorrow.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body class="max-width mx-auto px3">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/howe299r_blog/2018/04/08/Data-Analysis/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/howe299r_blog/2018/04/08/AprilTags/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&text=Automating the Experimental Setup"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&is_video=false&description=Automating the Experimental Setup"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Automating the Experimental Setup&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&name=Automating the Experimental Setup&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Arduino"><span class="toc-number">1.</span> <span class="toc-text">Arduino</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading"><span class="toc-number">1.1.</span> <span class="toc-text">Reading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EEPROM-Calibration-data"><span class="toc-number">1.2.</span> <span class="toc-text">EEPROM Calibration data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Experimental-setup"><span class="toc-number">1.3.</span> <span class="toc-text">Experimental setup</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python"><span class="toc-number">2.</span> <span class="toc-text">Python</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-code-Small-tidbits"><span class="toc-number">2.1.</span> <span class="toc-text">Python code, Small tidbits</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C"><span class="toc-number">3.</span> <span class="toc-text">C++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Development-Process-for-Modifying-AprilTag-Demo"><span class="toc-number">4.</span> <span class="toc-text">C++ Development Process for Modifying AprilTag Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">4.1.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quickstart-version-1"><span class="toc-number">4.2.</span> <span class="toc-text">Quickstart version 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quickstart-version-2"><span class="toc-number">4.3.</span> <span class="toc-text">Quickstart version 2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Experiment-Specific-settings"><span class="toc-number">4.4.</span> <span class="toc-text">Experiment Specific settings</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-code-Relevant-sections-modified-in"><span class="toc-number">4.5.</span> <span class="toc-text">C++ code: Relevant sections modified in</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment-Setup"><span class="toc-number">5.</span> <span class="toc-text">Experiment Setup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Whole-setup"><span class="toc-number">5.1.</span> <span class="toc-text">The Whole setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Robustness"><span class="toc-number">5.2.</span> <span class="toc-text">Code Robustness</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TODO-this-is-a-temporary-placeholder"><span class="toc-number"></span> <span class="toc-text">TODO: this is a temporary placeholder</span></a>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Automating the Experimental Setup
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">N Ouyang</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-04-08T09:55:02.000Z" itemprop="datePublished">2018-04-08</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css"><div class=".article-gallery" <p="">Experimental Setup, in terms of computer<br><a href="experimentalsetup03April2018.jpg" title="Experimental Setup, in terms of computer" class="gallery-item"><img src="experimentalsetup03April2018.jpg" alt="Experimental Setup, in terms of computer"></a><p></p>
+<p>This covers the parts of the data collection system that I integrated and automated.<br>Specifically</p>
+<ul>
+<li>Modified c code to spit out roll, pitch, yaw; continuously in CSV format over serial</li>
+<li>Modified openCV code to <ul>
+<li>continuously: spit out roll, pitch, yaw to terminal (stdout) </li>
+<li>on keypress: write out roll, pitch, yaw in CSV format into a file</li>
+<li>on keypress: save image to file </li>
+</ul>
+</li>
+<li>Created python code to read in c CSV data over serial<ul>
+<li>continuously: spit out roll, pitch, yaw to terminal (stdout) </li>
+<li>on keypress: write data to file</li>
+</ul>
+</li>
+</ul>
+<p>I set the zero coordinates to be roughly the neutral axis on z, and centered<br>width wise on the finger, and at rougly where the clamp is (at the top edge<br>of the proximal joint).  </p>
+<p>I identified, using a ruler, the x,y distances for each point.<br>Note: originally, was supposed to be grid of 0.5cm spaced points.<br>However, I found that</p>
+<ul>
+<li>I could not place picker on center, since there was a mold parting line</li>
+<li>I could not place picker 5 mm from center, and had to move it in </li>
+<li>I also accidentally used the wrong line of points, so it is +4 mm on one side of the center<br>line, and -2 cm on the other side.</li>
+</ul>
+<h2 id="Arduino"><a href="#Arduino" class="headerlink" title="Arduino"></a>Arduino</h2><p>On the c side, I didn’t really modify much. Adafruit had a “unified sensor library” plugin for the BNO055 9axis IMU I used (which has an onboard ARM to do the proprietary sensor fusion stuff).</p>
+<p>At first I did tinker around, because I thought I wanted position (xyz cm) and<br>not orientation (roll pitch yaw degrees). It’s a bit more annoying to get the<br>raw accel data out, the orientation data is what BNO055 has a magic calibration<br>for. The accel data is what’s called “raw sensor API” data. I think you call<br><code>bno.getVector</code> instead of <code>bno.getEvent</code>.</p>
+<pre class=" language-c"><code class="language-c">    imu<span class="token punctuation">:</span><span class="token punctuation">:</span>Vector<span class="token operator">&lt;</span><span class="token number">3</span><span class="token operator">></span> grav <span class="token operator">=</span> bno<span class="token punctuation">.</span><span class="token function">getVector</span><span class="token punctuation">(</span>Adafruit_BNO055<span class="token punctuation">:</span><span class="token punctuation">:</span>VECTOR_GRAVITY<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// !!!!</span>
+    <span class="token comment" spellcheck="true">//imu::Vector&lt;3> linaccel = bno.getVector(Adafruit_BNO055::VECTOR_LINEARACCEL); // !!!!</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>grav<span class="token punctuation">.</span><span class="token function">x</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="Reading"><a href="#Reading" class="headerlink" title="Reading"></a>Reading</h3><p>2014 accelerometer calibration paper was pretty cool [2]. It talked about how, by putting the IMU in various orientation, you could use the fact that there’s a constant gravity term to calibrate the IMU. I ended up not needing this because I used the BNO055 which runs calibrates for you / adafruit documents how to do this.<br>[2] “A robust and easy to implement method for IMU calibration without external equipments” ICRA 2014</p>
+<p>(TODO: Also, I have no idea how the magnetometer calibrates by “waving it in a figure 8”, I’d like to learn sometime.)</p>
+<h3 id="EEPROM-Calibration-data"><a href="#EEPROM-Calibration-data" class="headerlink" title="EEPROM Calibration data"></a>EEPROM Calibration data</h3><p>Oh, and to save on setup time, I run <code>restore_offsets.ino</code> first . The BNO055 has a bit of EEPROM.</p>
+<pre class=" language-c"><code class="language-c"><span class="token comment" spellcheck="true">// as written by adafruit library</span>
+    EEPROM<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>eeAddress<span class="token punctuation">,</span> bnoID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    eeAddress <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    EEPROM<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>eeAddress<span class="token punctuation">,</span> newCalib<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Data stored to EEPROM."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>This data is read into <code>sensorapi_bno055.ino</code>, after which, when I ran the file only the magnetometer is not calibrated. Just lightly disturbing the finger was enough to bring M calibration from “1” to “3” and calibrate the whole system.</p>
+<p>DEBUG TIP: I had to change my whole experimental setup, because the acceleromter refused to calibrate when the finger didn’t start out roughly parallel to the ground. Not sure why.</p>
+<pre class=" language-c"><code class="language-c"><span class="token comment" spellcheck="true">// as written by adafruit library</span>
+    <span class="token keyword">int</span> eeAddress <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">long</span> bnoID<span class="token punctuation">;</span>
+    EEPROM<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>eeAddress<span class="token punctuation">,</span> bnoID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    adafruit_bno055_offsets_t calibrationData<span class="token punctuation">;</span>
+    sensor_t sensor<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">/*  Look for the sensor's unique ID at the beginning oF EEPROM. This isn't foolproof, but it's better than nothing.  */</span>
+
+    bno<span class="token punctuation">.</span><span class="token function">getSensor</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sensor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>bnoID <span class="token operator">!=</span> sensor<span class="token punctuation">.</span>sensor_id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nNo Calibration Data for this sensor exists in EEPROM"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\nFound Calibration for this sensor in EEPROM."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        eeAddress <span class="token operator">+</span><span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">long</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        EEPROM<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>eeAddress<span class="token punctuation">,</span> calibrationData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"\n\nRestoring Calibration data to the BNO055..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        bno<span class="token punctuation">.</span><span class="token function">setSensorOffsets</span><span class="token punctuation">(</span>calibrationData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+</code></pre>
+<h3 id="Experimental-setup"><a href="#Experimental-setup" class="headerlink" title="Experimental setup"></a>Experimental setup</h3><p>For reference, the data output format looks like this:</p>
+<p><strong>Data Format</strong></p>
+<pre class=" language-c"><code class="language-c">  <span class="token function">displayCalStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">";"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"XYZ; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>orientation<span class="token punctuation">.</span>x<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>orientation<span class="token punctuation">.</span>y<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>orientation<span class="token punctuation">.</span>z<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Serial<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">";"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>The calibration status is unique to the BNO sensor, it tells you from 0 to 3<br>how calibrated each of the mag / gryo / accel is, and gives a score for the<br>overall system as well. </p>
+<p>Funny story: initially my setup used a magnet to hold the pumpkin poking tool<br>on to the triple beam balance (one hotglued to tool, one above the plate). I<br>spent a while scratching my head about how the magnetometer refused to<br>calibrate when I actually went to collect data, then realized I had this super<br>strong magnet inches from the IMU… whoops. (I modified it to just use a lot<br>of hot glue instead, which was REALLY ANNOYING. The triple beam balance plate<br>is pretty slick. I ended up roughing up the surface a tiny bit with sandpaper).</p>
+<p><strong>Calibration Format</strong></p>
+<pre class=" language-c"><code class="language-c">def <span class="token function">displayCalStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    bno<span class="token punctuation">.</span><span class="token function">getCalibration</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>system<span class="token punctuation">,</span> <span class="token operator">&amp;</span>gyro<span class="token punctuation">,</span> <span class="token operator">&amp;</span>accel<span class="token punctuation">,</span> <span class="token operator">&amp;</span>mag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"Sys:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>system<span class="token punctuation">,</span> DEC<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" G:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>gyro<span class="token punctuation">,</span> DEC<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" A:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>accel<span class="token punctuation">,</span> DEC<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">" M:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Serial<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span>mag<span class="token punctuation">,</span> DEC<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>I actually have no idea how my code works. But it does! I was struggling to<br>have the python file both continuously output the serial input to a terminal,<br>while also being able to catch a keystroke on occasion that would write one<br>datapoint (one line) to a file. I ended up needing to use tkinter to spawn a<br>window to catch the keystroke. The “tkinter app” lived inside a thread, I<br>guess, which ran asynchronously, allowing the program to proceed to the loop<br>where it continuously read in data and spat it out.</p>
+<p>As per <code>IMU_to_file.py</code>, the libraries needed:</p>
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 03 April 2018 </span>
+<span class="token comment" spellcheck="true"># Reads in (c) serial port line by line, printing out on terminal. </span>
+<span class="token comment" spellcheck="true"># Also opens tkinter window. Pressing any key in there writes the next serial line to a file</span>
+<span class="token comment" spellcheck="true"># In the terminal, Ctrl-C twice will exit the program. </span>
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> serial
+<span class="token keyword">import</span> time
+<span class="token keyword">import</span> tkinter <span class="token keyword">as</span> tk
+<span class="token keyword">import</span> threading
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+</code></pre>
+<p><strong>The major stuff requires simply looking at the full file.</strong></p>
+<p>(TODO: put link to full source code, on github, both in main “research” repo and also on the deployed blog directory)</p>
+<h3 id="Python-code-Small-tidbits"><a href="#Python-code-Small-tidbits" class="headerlink" title="Python code, Small tidbits"></a>Python code, Small tidbits</h3><p>The relevant “basics” stuff I re-learned:</p>
+<p><strong>Get human-readable time as a string</strong></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+strtime <span class="token operator">=</span> datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>strftime<span class="token punctuation">(</span><span class="token string">'%Y-%m-%d %H:%M:%S'</span><span class="token punctuation">)</span>
+</code></pre>
+<p><strong>Write to file</strong></p>
+<pre class=" language-python"><code class="language-python">fmode <span class="token operator">=</span> <span class="token string">'ab'</span>
+outf <span class="token operator">=</span> open<span class="token punctuation">(</span>fname<span class="token punctuation">,</span>fmode<span class="token punctuation">)</span>
+            outf<span class="token punctuation">.</span>write<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+            outf<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Also came across a neat way to avoid having to modify the file all the time, because when I power cycle the c, it’ll occasionally change the port it’s connected  [1].</p>
+<p><strong>Serial port changes</strong></p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">if</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token string">'/dev/ttyACM0'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    addr <span class="token operator">=</span>  <span class="token string">' dev/ttyACM0'</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+</code></pre>
+<p><strong>Read from serial port</strong></p>
+<pre class=" language-python"><code class="language-python">port <span class="token operator">=</span> serial<span class="token punctuation">.</span>Serial<span class="token punctuation">(</span>addr<span class="token punctuation">,</span>baud<span class="token punctuation">)</span>
+<span class="token keyword">while</span> <span class="token number">1</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> port<span class="token punctuation">.</span>readline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+</code></pre>
+<p><em>[1] By the way, why can’t the Arduino with its fancy GUI do something similar?<br>where it knows the OS and the likely ports, and if the port doesn’t exist<br>anymore, it’ll automatically change to the next most likely. There could be a<br>prompt asking the user if it’s the correct port even</em></p>
+<h2 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h2><p>On the C++ side, the main things I learned were how to write out to a file (in append mode), as well as how to get the current time (in order to timestamp when I first opened the file).</p>
+<h2 id="C-Development-Process-for-Modifying-AprilTag-Demo"><a href="#C-Development-Process-for-Modifying-AprilTag-Demo" class="headerlink" title="C++ Development Process for Modifying AprilTag Demo"></a>C++ Development Process for Modifying AprilTag Demo</h2><h3 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h3><p>I wanted to get the apriltag demo to output data that would be amenable to analysis later.<br>I stripped out the “ID” and “Hamming” in the print statements.</p>
+<p>As per <code>apriltags_demo.cpp</code>:</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">/* 03 April 2018
+ * Edited by nrw
+ * Additions: Press any key to simultaneously write data to file and capture image to file
+ * Maintains stream of data to terminal
+ * Ctrl-C must now be used to exit program
+ */</span>
+</code></pre>
+<h3 id="Quickstart-version-1"><a href="#Quickstart-version-1" class="headerlink" title="Quickstart version 1"></a>Quickstart version 1</h3><ul>
+<li><p>edit file</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> ~/Documents/howe299r/apriltags 
+<span class="token function">vi</span> example/apriltags_demo.cpp
+</code></pre>
+</li>
+<li><p>Compile<br><code>bash
+cd ~/Documents/howe299r/apriltags
+make</code>bash</p>
+</li>
+<li><p>Run file </p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">cd</span> ~/Documents/howe299r/apriltags/build/bin 
+./apriltags_demo
+</code></pre>
+</li>
+</ul>
+<h3 id="Quickstart-version-2"><a href="#Quickstart-version-2" class="headerlink" title="Quickstart version 2"></a>Quickstart version 2</h3><ul>
+<li>In fact, I abstracted this into a file called <code>run.sh</code>, thus the simplified dev cycle:<pre class=" language-bash"><code class="language-bash">$ j example
+$ <span class="token function">vi</span> apriltags_demo.cpp <span class="token punctuation">(</span>make edits and save<span class="token punctuation">)</span>
+$ ./run.sh
+</code></pre>
+</li>
+</ul>
+<p>Where I had as contents of run.sh:</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+APRIL_DIR<span class="token operator">=</span><span class="token string">"/home/nrw/Documents/howe299r/apriltags"</span>
+<span class="token function">cd</span> <span class="token variable">$APRIL_DIR</span>
+<span class="token comment" spellcheck="true">#make clean</span>
+<span class="token function">make</span>
+
+<span class="token function">cd</span> <span class="token variable">$APRIL_DIR</span>
+<span class="token keyword">echo</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">pwd</span><span class="token variable">)</span></span>
+<span class="token function">cd</span> build/bin/
+./apriltags_demo
+</code></pre>
+<h3 id="Experiment-Specific-settings"><a href="#Experiment-Specific-settings" class="headerlink" title="Experiment Specific settings"></a>Experiment Specific settings</h3><p>From the openCV camera calibration I had these settings</p>
+<pre class=" language-cpp"><code class="language-cpp">
+    <span class="token function">m_width</span><span class="token punctuation">(</span><span class="token number">640</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">m_height</span><span class="token punctuation">(</span><span class="token number">480</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">m_tagSize</span><span class="token punctuation">(</span><span class="token number">0.00944</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">m_fx</span><span class="token punctuation">(</span><span class="token number">667</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// in pixels</span>
+    <span class="token function">m_fy</span><span class="token punctuation">(</span><span class="token number">666</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">//</span>
+    <span class="token function">m_px</span><span class="token punctuation">(</span><span class="token number">344</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment" spellcheck="true">// principal point</span>
+    <span class="token function">m_py</span><span class="token punctuation">(</span><span class="token number">227</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+</code></pre>
+<h3 id="C-code-Relevant-sections-modified-in"><a href="#C-code-Relevant-sections-modified-in" class="headerlink" title="C++ code: Relevant sections modified in"></a>C++ code: Relevant sections modified in</h3><p>In <code>apriltags_demo.cpp</code></p>
+<p>First we need some new libraries and constants</p>
+<p><strong>Libraries</strong></p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/time.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iomanip></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;algorithm></span> </span><span class="token comment" spellcheck="true">//remove newline</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;fstream></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">int</span> flag <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+std<span class="token operator">::</span>string fname <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>Create filename</strong></p>
+<pre class=" language-cpp"><code class="language-cpp">    time_t now <span class="token operator">=</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span><span class="token operator">*</span> dt <span class="token operator">=</span> <span class="token function">ctime</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// get human readable current time</span>
+    <span class="token operator">*</span>std<span class="token operator">::</span><span class="token function">remove</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> dt<span class="token operator">+</span><span class="token function">strlen</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token string">'\0'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//remove newline</span>
+    fname <span class="token operator">+</span><span class="token operator">=</span> <span class="token function">string</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    fname <span class="token operator">+</span><span class="token operator">=</span> <span class="token string">"_openCV.txt"</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>Now we write to terminal, and also write out data to a file on keypress in the OpenCV window</strong></p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">print_detection</span><span class="token punctuation">(</span>AprilTags<span class="token operator">::</span>TagDetection<span class="token operator">&amp;</span> detection<span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">const</span> <span class="token keyword">int</span> TIMESTEP <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+    time_t now <span class="token operator">=</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span><span class="token operator">*</span> dt <span class="token operator">=</span> <span class="token function">ctime</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// get human readable current time</span>
+    <span class="token operator">*</span>std<span class="token operator">::</span><span class="token function">remove</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> dt<span class="token operator">+</span><span class="token function">strlen</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token string">'\0'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//remove newline</span>
+
+<span class="token comment" spellcheck="true">// print data to terminal, aka cout:</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">" ["</span> <span class="token operator">&lt;&lt;</span> dt <span class="token operator">&lt;&lt;</span> <span class="token string">"] distance,x,y,z,yaw,pitch,roll; "</span>
+         <span class="token operator">&lt;&lt;</span> fixed <span class="token operator">&lt;&lt;</span> <span class="token function">setprecision</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> translation<span class="token punctuation">.</span><span class="token function">norm</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">translation</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">translation</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">translation</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> yaw
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> pitch
+         <span class="token operator">&lt;&lt;</span> <span class="token string">"; "</span> <span class="token operator">&lt;&lt;</span> roll <span class="token operator">&lt;&lt;</span> <span class="token string">";\n"</span>
+         <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//nrw</span>
+<span class="token comment" spellcheck="true">// ... do stuff </span>
+
+<span class="token comment" spellcheck="true">// write data to file, using ofstream. fname has a timestamp of when we started collecting data</span>
+<span class="token comment" spellcheck="true">// while each line (datapoint) has a timestamp as well</span>
+<span class="token comment" spellcheck="true">// waitKey(1) waits 1 (millisecond, I think)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>cv<span class="token operator">::</span><span class="token function">waitKey</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"wrote to file \n"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//nrw</span>
+        ofstream myfile<span class="token punctuation">;</span>
+        myfile<span class="token punctuation">.</span><span class="token function">open</span> <span class="token punctuation">(</span>fname<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> std<span class="token operator">::</span>ios_base<span class="token operator">::</span>app <span class="token operator">|</span> std<span class="token operator">::</span>ios_base<span class="token operator">::</span>out<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//open in append mode</span>
+        myfile <span class="token operator">&lt;&lt;</span>  <span class="token string">" ["</span> <span class="token operator">&lt;&lt;</span> dt <span class="token operator">&lt;&lt;</span> <span class="token string">"] distance,x,y,z,yaw,pitch,roll; "</span>  <span class="token comment" spellcheck="true">//nrw</span>
+        flag <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//send signal to write image as well</span>
+</code></pre>
+<p>Also I wanted the image at the timepoint, for trouble-shooting purposes<br>Here’s the relevant tidbits about using openCV’s library to call imwrite and write the image to a file:</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<span class="token comment" spellcheck="true">// ... run processImage(), which runs print_detection() if a tag is detected ... </span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span>flag <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          cout <span class="token operator">&lt;&lt;</span> <span class="token string">"wrote to file \n"</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//nrw</span>
+
+          time_t now <span class="token operator">=</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">char</span><span class="token operator">*</span> dt <span class="token operator">=</span> <span class="token function">ctime</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>now<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// get human readable current time</span>
+          <span class="token operator">*</span>std<span class="token operator">::</span><span class="token function">remove</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> dt<span class="token operator">+</span><span class="token function">strlen</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token string">'\0'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//remove newline</span>
+          std<span class="token operator">::</span>string imageout <span class="token operator">=</span> <span class="token function">string</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+          imageout <span class="token operator">+</span><span class="token operator">=</span><span class="token string">"_images.jpg"</span><span class="token punctuation">;</span>
+          <span class="token function">imwrite</span><span class="token punctuation">(</span>imageout<span class="token punctuation">,</span> image <span class="token punctuation">)</span><span class="token punctuation">;</span>
+          flag <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="Experiment-Setup"><a href="#Experiment-Setup" class="headerlink" title="Experiment Setup"></a>Experiment Setup</h2><p>Finally, I used <code>watch</code> and <code>head</code> in order to manually inspect the files in real time, and make sure that I was keeping the IMU and OpenCV data consistent, i.e. not accidentally taking two datapoints. </p>
+<h3 id="The-Whole-setup"><a href="#The-Whole-setup" class="headerlink" title="The Whole setup"></a>The Whole setup</h3><p>Open an openCV window, and a TKinter window. Clicking into either window, and hitting a key, will cause data to be recorded.</p>
+<pre class=" language-bash"><code class="language-bash">nrw@earlgrey: howe299r/apriltags/build/bin$ ./apriltags_demo
+nrw@earlgrey: howe299r/python$ python IMU_to_file.py 
+</code></pre>
+<p>To have a sanity check, we want to peek into the files in real time. Let’s look at the number of lines in the file using <code>wc</code> as well as display the last few lines in the file using <code>tail</code>. </p>
+<pre class=" language-bash"><code class="language-bash">nrw@earlgrey: howe299r/apriltags/build/bin$ <span class="token function">watch</span> -n 0.2 <span class="token function">tail</span> <span class="token string">"*_openCV.txt"</span>
+nrw@earlgrey: howe299r/apriltags/build/bin$ <span class="token function">watch</span> -n 0.2 <span class="token function">wc</span> <span class="token string">"*_openCV.txt"</span>
+nrw@earlgrey: howe299r/python$ <span class="token function">watch</span> -n 0.2 <span class="token function">tail</span> <span class="token string">"*_accel_data.txt"</span> 
+nrw@earlgrey: howe299r/python$ <span class="token function">watch</span> -n 0.2 <span class="token function">wc</span> <span class="token string">"*_accel_data.txt"</span> 
+** $ <span class="token function">watch</span> -n 0.2 <span class="token function">tail</span> tailtest.txt
+</code></pre>
+<p>And finally I had file manager window open to check if the images were being<br>written correctly, and also allow me to manually intervene in the txt files as needed.</p>
+<p>Make sure to click on the image below and maximize your window, if you want to be<br>able to see the text and what is going on:</p>
+<p>Experimental Setup, in terms of computer<br><a href="experimentalsetup03April2018.jpg" title="Experimental Setup, in terms of computer" class="gallery-item"><img src="experimentalsetup03April2018.jpg" alt="Experimental Setup, in terms of computer"></a></p>
+<h3 id="Code-Robustness"><a href="#Code-Robustness" class="headerlink" title="Code Robustness"></a>Code Robustness</h3><p>I also wanted to be able to recover when I made an oopsie in the data collection (e.g. leaving the weights on when I went to take a “zero” reading.</p>
+<p>This was significantly easier now that all data was timestamped.</p>
+<ul>
+<li>For the images – I simply used a GUI file manager to delete them.</li>
+<li>For the openCV data– I simply used a GUI editor to delete the lines.</li>
+<li>For the IMU data – my python program would refuse to write to the file anymore if I edited the file. </li>
+</ul>
+<p>I worked around the fragile python file by… using a weird commmand to write to the file without “overwriting” the file. This tidbit thanks to stackoverflow (lost the link)</p>
+<pre class=" language-bash"><code class="language-bash">$ n<span class="token operator">=</span>4
+$ tac tmp.txt <span class="token operator">|</span> <span class="token function">sed</span> <span class="token string">"1,<span class="token variable">$n</span>{d}"</span> <span class="token operator">|</span> tac <span class="token operator">></span> out.txt<span class="token punctuation">;</span> <span class="token function">cat</span> out.txt <span class="token operator">></span> tmp.txt 
+</code></pre>
+<p>I tried similar commands that used “&gt; tmp.txt; mv out.txt &gt; tmp.txt”<br>but i guess “cat” was the trick or something.</p>
+<p>ShadowRanger had this to say about why:</p>
+<pre><code>@orangenarwhals: Your command line there is never changing the inode associated with the file name (&gt; somefile truncates an existing somefile then writes new data, it doesn&#39;t delete said file, then create a new one). Most editors use a crash safe form of editing, where a new file is written completely, then an atomic rename operation is issued which renames the new file to the old file name (implicitly deleting the old file). But this means the inode number changes after each save operation, which means open file handles from other programs are invalidated). 
+The advantage to the &quot;write new file, rename to replace old file&quot; is that if you lose power (or blue screen, or the program just crashes) at any point prior to the rename, your original file data is intact. In no circumstance does the final file hold anything but the complete old data or the complete new data. If your computer crashed during cat out.txt &gt; tmp.txt step or you killed it midway through processing, tmp.txt might contain partially written garbage, or nothing at all, and it might not be possible to tell if out.txt or tmp.txt was the &quot;correct&quot; data.
+– ShadowRanger Apr 4 at 1:59 
+</code></pre><p>Anyway,<br>According to stackoverflow, I was just being very dumb after being confused by threads and such. I didn’t get to test this answer, but seems reasonable.<br><a href="https://stackoverflow.com/questions/49626230/python-cannot-write-to-file-after-saved-in-another-editor/49626374" target="_blank" rel="noopener">https://stackoverflow.com/questions/49626230/python-cannot-write-to-file-after-saved-in-another-editor/49626374</a></p>
+<pre class=" language-python"><code class="language-python"><span class="token operator">//</span><span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'tmp.txt'</span><span class="token punctuation">,</span> <span class="token string">'ab'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f <span class="token punctuation">:</span> <span class="token operator">//</span> move this inside <span class="token keyword">for</span> loop to fix<span class="token punctuation">,</span> 
+<span class="token keyword">while</span> <span class="token boolean">True</span> <span class="token punctuation">:</span>
+    <span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'tmp.txt'</span><span class="token punctuation">,</span> <span class="token string">'ab'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f <span class="token punctuation">:</span>
+        f<span class="token punctuation">.</span>write<span class="token punctuation">(</span><span class="token string">'this is a test\n'</span><span class="token punctuation">)</span> <span class="token operator">//</span>just keep opening the file<span class="token punctuation">,</span> i guess nothing bad happens?
+        f<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Physical Experiment Setup<br><a href="02Apr_setup3.jpg" title="Physical Experiment Setup" class="gallery-item"><img src="02Apr_setup3.jpg" alt="Physical Experiment Setup"></a></p>
+<h1 id="TODO-this-is-a-temporary-placeholder"><a href="#TODO-this-is-a-temporary-placeholder" class="headerlink" title="TODO: this is a temporary placeholder"></a>TODO: this is a temporary placeholder</h1><p>move these files to their own post, eventually…</p>
+<p><a href="02Apr_setup2.jpg" title="width (y) of finger" class="gallery-item"><img src="02Apr_setup2.jpg" alt="width (y) of finger"></a><br><a href="02Apr_setup1.jpg" title="length (x) of finger" class="gallery-item"><img src="02Apr_setup1.jpg" alt="length (x) of finger"></a><br><a href="torque_calc.jpg" title="x,y,z coordinates, also using a phone to directly write metadata into image" class="gallery-item"><img src="torque_calc.jpg" alt="x,y,z coordinates, also using a phone to directly write metadata into image"></a><br><a href="scale_1g.jpg" title="verification of force transmitted, using a scale" class="gallery-item"><img src="scale_1g.jpg" alt="verification of force transmitted, using a scale"></a><br><a href="IMU_finger.jpg" title="High tech attachment method of IMU to finger" class="gallery-item"><img src="IMU_finger.jpg" alt="High tech attachment method of IMU to finger"></a></p>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Arduino"><span class="toc-number">1.</span> <span class="toc-text">Arduino</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading"><span class="toc-number">1.1.</span> <span class="toc-text">Reading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#EEPROM-Calibration-data"><span class="toc-number">1.2.</span> <span class="toc-text">EEPROM Calibration data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Experimental-setup"><span class="toc-number">1.3.</span> <span class="toc-text">Experimental setup</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python"><span class="toc-number">2.</span> <span class="toc-text">Python</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-code-Small-tidbits"><span class="toc-number">2.1.</span> <span class="toc-text">Python code, Small tidbits</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C"><span class="toc-number">3.</span> <span class="toc-text">C++</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Development-Process-for-Modifying-AprilTag-Demo"><span class="toc-number">4.</span> <span class="toc-text">C++ Development Process for Modifying AprilTag Demo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Why"><span class="toc-number">4.1.</span> <span class="toc-text">Why</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quickstart-version-1"><span class="toc-number">4.2.</span> <span class="toc-text">Quickstart version 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Quickstart-version-2"><span class="toc-number">4.3.</span> <span class="toc-text">Quickstart version 2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Experiment-Specific-settings"><span class="toc-number">4.4.</span> <span class="toc-text">Experiment Specific settings</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-code-Relevant-sections-modified-in"><span class="toc-number">4.5.</span> <span class="toc-text">C++ code: Relevant sections modified in</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Experiment-Setup"><span class="toc-number">5.</span> <span class="toc-text">Experiment Setup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Whole-setup"><span class="toc-number">5.1.</span> <span class="toc-text">The Whole setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Code-Robustness"><span class="toc-number">5.2.</span> <span class="toc-text">Code Robustness</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TODO-this-is-a-temporary-placeholder"><span class="toc-number"></span> <span class="toc-text">TODO: this is a temporary placeholder</span></a>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&text=Automating the Experimental Setup"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&is_video=false&description=Automating the Experimental Setup"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Automating the Experimental Setup&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&title=Automating the Experimental Setup"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/08/Automated-Experimental-Setup/&name=Automating the Experimental Setup&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 N Ouyang
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/howe299r_blog/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/howe299r_blog/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/howe299r_blog/lib/jquery/jquery.min.js"></script>
+<script src="/howe299r_blog/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/howe299r_blog/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+

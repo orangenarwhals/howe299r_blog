@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Plotting Residuals (now with ~492 datapoints)">
+<meta property="og:url" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/index.html">
+<meta property="og:site_name" content="2018 Howe 299r Research Blog">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/full_data_csv.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/K_linreg_numpy_ridge_comparison.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/FAKEDATA_with_intercept.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/FAKEDATA_no_intercept.jpg">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/Torq%20Est%20X.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/Torq%20Est%20Y.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/ForceZ.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/ThetaX.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/ThetaY.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/ThetaZ.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/PositionX.png">
+<meta property="og:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/PositionY.png">
+<meta property="og:updated_time" content="2018-04-16T01:44:17.983Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Plotting Residuals (now with ~492 datapoints)">
+<meta name="twitter:image" content="http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/full_data_csv.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/howe299r_blog/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/howe299r_blog/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/howe299r_blog/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Plotting Residuals (now with ~492 datapoints)</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/howe299r_blog/css/style.css">
+    <!-- rss -->
+    
+    
+<link rel="stylesheet" href="/howe299r_blog/css/prism-tomorrow.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body class="max-width mx-auto px3">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/howe299r_blog/2018/04/08/Stiffness-Matrix/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&text=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&is_video=false&description=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Plotting Residuals (now with ~492 datapoints)&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&name=Plotting Residuals (now with ~492 datapoints)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Sanity-Check"><span class="toc-number">1.</span> <span class="toc-text">Sanity Check</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Questions"><span class="toc-number">2.</span> <span class="toc-text">Questions</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Plots"><span class="toc-number">3.</span> <span class="toc-text">Plots</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Torque-Estimated"><span class="toc-number">3.1.</span> <span class="toc-text">Torque Estimated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Force"><span class="toc-number">3.2.</span> <span class="toc-text">Force</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thetas"><span class="toc-number">3.3.</span> <span class="toc-text">Thetas</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Positions"><span class="toc-number">3.4.</span> <span class="toc-text">Positions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Math"><span class="toc-number">3.5.</span> <span class="toc-text">Math</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Thought-Process"><span class="toc-number">4.</span> <span class="toc-text">Thought Process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Interpretation"><span class="toc-number">5.</span> <span class="toc-text">Interpretation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Todo"><span class="toc-number">6.</span> <span class="toc-text">Todo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Project-Timeline-tracking"><span class="toc-number">6.1.</span> <span class="toc-text">Project Timeline tracking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code-Reference"><span class="toc-number">6.2.</span> <span class="toc-text">Code Reference</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Plotting Residuals (now with ~492 datapoints)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">N Ouyang</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2018-04-10T18:22:52.000Z" itemprop="datePublished">2018-04-10</time>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css"><div class=".article-gallery" <p="">Update 13 April: Fixed K screenshot, which was of poor fit (before fixing code to generate forces to take<br>into account 3 datapoints per force.<br>Update: Added visual K confirmation (linear fit vs ridge), noted issue with Ridge &amp; fit_intercept <p></p>
+<p>For this week, I generated graphs of the residuals of the torque estimate using the simple linear model: <code>torque = k * theta + constant</code>.</p>
+<h1 id="Sanity-Check"><a href="#Sanity-Check" class="headerlink" title="Sanity Check"></a>Sanity Check</h1><p><a href="full_data_csv.png" class="gallery-item"><img src="full_data_csv.png" alt=""></a></p>
+<p>Observe the “N” and “R” columns, which are the torque Y, and estimated torque<br>Y, respectively. Furthermore we have the residual itself in column “V”. The<br>estimates mostly pass the sanity check (seem reasonable). </p>
+<p>Below I show K as calculated by <code>numpy.lstsq</code> vs <code>sklearn.linreg</code> vs `sklearn., as calculated across all 492 datapoints. We see that pure linear regression has the least error.</p>
+<p><a href="K_linreg_numpy_ridge_comparison.png" title="Stiffness matrix comparison" class="gallery-item"><img src="K_linreg_numpy_ridge_comparison.png" alt="Stiffness matrix comparison"></a></p>
+<p>Scikit Ridge regression library provides opportunity to turn off y-intercept term of model. Naturally this resulted in higher error (not shown). What’s interesting to me is that Ridge regression performs so poorly, I was under the impression that it was fairly similar to linear regression. TODO: investigate this further.</p>
+<p>I had this brief moment of confusion where I thought Ridge seemed to fit better than linear regression, below you may see the difference between fitting with and without y-intercept.  </p>
+<p>(NOTE: Following two graphs are using”fake data”, aka data I had not fixed yet)</p>
+<p>Here is fit with intercept </p>
+<p><a href="FAKEDATA_with_intercept.jpg" class="gallery-item"><img src="FAKEDATA_with_intercept.jpg" alt=""></a>{width=50%}</p>
+<p>And with no intercept (aka line must pass through zero)</p>
+<p><a href="FAKEDATA_no_intercept.jpg" class="gallery-item"><img src="FAKEDATA_no_intercept.jpg" alt=""></a>{width=50%}</p>
+<p>The error rate with simple linear regression is not bad, a RMSE of 17.7 (g cm), which with average x position ~3.5 cm, is around <strong>5 g of force estimate error</strong> .</p>
+<h1 id="Questions"><a href="#Questions" class="headerlink" title="Questions"></a>Questions</h1><p><strong>Difference between numpy and sklearn K estimates</strong></p>
+<p>Questions: As seen in above image, Numpy’s least squares answer for K – was very different from sklearns.  sklearn’s K looked more reasonable (didn’t have tiny values) – is this just due to normalization? Sklearn’s K passed the sanity check, but I did not check numpy’s K.  </p>
+<p><strong>What to plot</strong><br>Do we really need <em>only</em> the torque residuals? Or should we also look at the theta or force or position residuals? I can’t think of a reason we would need the latter.</p>
+<h1 id="Plots"><a href="#Plots" class="headerlink" title="Plots"></a>Plots</h1><p>As we ultimately wish to estimate torque, I calculated the torque residuals (for X and Y, aka roll and pitch respectively). I then plotted them against: $\hat{\tau}_x, \hat{\tau}_y, F_z, \theta_x, \theta_y, \theta_z, r_x, r_y$.</p>
+<h2 id="Torque-Estimated"><a href="#Torque-Estimated" class="headerlink" title="Torque Estimated"></a>Torque Estimated</h2><p>I think that only (epsX vs torX) and (epsY vs torY) should be meaningful, but here are all four combinations (made my code easier).</p>
+<ul>
+<li>TorqueX, Estimated<br>  <a href="Torq Est X.png" class="gallery-item"><img src="Torq Est X.png" alt=""></a></li>
+<li>TorqueY, Estimated<br>  <a href="Torq Est Y.png" class="gallery-item"><img src="Torq Est Y.png" alt=""></a></li>
+</ul>
+<h2 id="Force"><a href="#Force" class="headerlink" title="Force"></a>Force</h2><ul>
+<li>ForceZ<br>  <a href="ForceZ.png" class="gallery-item"><img src="ForceZ.png" alt=""></a> </li>
+</ul>
+<h2 id="Thetas"><a href="#Thetas" class="headerlink" title="Thetas"></a>Thetas</h2><ul>
+<li>ThetaX<br>  <a href="ThetaX.png" class="gallery-item"><img src="ThetaX.png" alt=""></a> </li>
+<li>ThetaY<br>  <a href="ThetaY.png" class="gallery-item"><img src="ThetaY.png" alt=""></a></li>
+<li>ThetaZ<br>  <a href="ThetaZ.png" class="gallery-item"><img src="ThetaZ.png" alt=""></a></li>
+</ul>
+<h2 id="Positions"><a href="#Positions" class="headerlink" title="Positions"></a>Positions</h2><ul>
+<li>PositionX<br>  <a href="PositionX.png" class="gallery-item"><img src="PositionX.png" alt=""></a></li>
+<li>PositionY<br>  <a href="PositionY.png" class="gallery-item"><img src="PositionY.png" alt=""></a></li>
+</ul>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><p>See previous post.</p>
+<h1 id="Thought-Process"><a href="#Thought-Process" class="headerlink" title="Thought Process"></a>Thought Process</h1><p>If we take our stiffness matrix estimate, $\hat{K}$, and plug it back into our $\tau = K \theta$ equation, we will get a $\hat{\tau}$ as predicted by our model. We can then compare $\hat{\tau}$ to our measured $\tau$. We can then also calculate our torque estimate residuals.  </p>
+<p>I had a lot of confusion about what exactly I should calculate for the residuals. Did I need to calculate estimates of the force, and then residuals for that, and the estimates of the deflection using the measured torque and the estimated K, and then plot them against everything? This would result in an intensely combinatorial data set.</p>
+<p>Eventually I settled on, the torque is ultimately what we want to be able to estimate, as based.  We assume the deflections as measured by the IMU can give give us the torque. Assuming as well that we get an accurate reading of the force contact location, we can then derive the force applied ( $F = \tau /\ r$ ). Thus, we only need the residuals for the torque estimates for x, y (assuming torque z is always zero).</p>
+<p>Additionally, I was sad to learn that the K bottom row estimate would always be zero. I was hoping that, since I had datapoints with nonzero $\theta$ x,y,z, then the least squares solution might find something interesting, e.g. $0 = -0.2x + 1.5y -.1z$.  However, it appears that our assumption that force is applied at $r_z = 0$ always, means that we cannot solve for anything meaningful for the K matrix.</p>
+<h1 id="Interpretation"><a href="#Interpretation" class="headerlink" title="Interpretation"></a>Interpretation</h1><p>[TODO]  I think I need to take a day and come back to look at these graphs.</p>
+<h1 id="Todo"><a href="#Todo" class="headerlink" title="Todo"></a>Todo</h1><p>Actually interpret the graphs… and reduce the rmse.<br>(handtune a basis function to play around, then maybe NN to learn the correct basis function?)</p>
+<h2 id="Project-Timeline-tracking"><a href="#Project-Timeline-tracking" class="headerlink" title="Project Timeline tracking"></a>Project Timeline tracking</h2><p>TODO</p>
+<h2 id="Code-Reference"><a href="#Code-Reference" class="headerlink" title="Code Reference"></a>Code Reference</h2><pre class=" language-python"><code class="language-python">
+myX <span class="token operator">=</span> BigTheta<span class="token comment" spellcheck="true">#theta_1Dreshape(-1,1)</span>
+myy <span class="token operator">=</span> torq 
+
+regr<span class="token operator">=</span> Ridge<span class="token punctuation">(</span>fit_intercept<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">,</span> random_state<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> normalize<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token triple-quoted-string string">'''
+fit_intercept : boolean
+
+    Whether to calculate the intercept for this model. If set to false, no intercept will be used in calculations (e.g. data is expected to be already centered).
+'''</span>
+regr2 <span class="token operator">=</span> linear_model<span class="token punctuation">.</span>LinearRegression<span class="token punctuation">(</span><span class="token punctuation">)</span>
+regr<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>myX<span class="token punctuation">,</span> myy<span class="token punctuation">)</span>
+regr2<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>myX<span class="token punctuation">,</span> myy<span class="token punctuation">)</span>
+K <span class="token operator">=</span> regr<span class="token punctuation">.</span>coef_
+K2 <span class="token operator">=</span> regr2<span class="token punctuation">.</span>coef_ 
+yPred<span class="token operator">=</span> regr<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>myX<span class="token punctuation">)</span> 
+yPred2<span class="token operator">=</span> regr2<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>myX<span class="token punctuation">)</span> 
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n======================'</span><span class="token punctuation">)</span>
+matK <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>lstsq<span class="token punctuation">(</span>BigTorque<span class="token punctuation">,</span> BigTheta<span class="token punctuation">,</span> rcond<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>matK<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Numpy linalg.lstsq() K coefficients:\n'</span><span class="token punctuation">,</span> matK<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'LinReg K Coefficients: \n'</span><span class="token punctuation">,</span> K2<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Ridge K Coefficients: \n'</span><span class="token punctuation">,</span> K<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n======================'</span><span class="token punctuation">)</span>
+
+torq_est <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>K2<span class="token punctuation">,</span> theta<span class="token punctuation">.</span>T<span class="token punctuation">)</span><span class="token punctuation">.</span>T <span class="token comment" spellcheck="true">#n.3</span>
+resid <span class="token operator">=</span> torq <span class="token operator">-</span> yPred
+mse <span class="token operator">=</span> <span class="token punctuation">(</span>resid <span class="token operator">**</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'resid shape'</span><span class="token punctuation">,</span> resid<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'RMSE Per Torque Dim'</span><span class="token punctuation">,</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>mse<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#print('Variance score (ideal 1): %.2f' % r2_score(thetaY))</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n=======  SkLearn Metrics===='</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n---- Using LinReg K dot theta. This has worse error as we have no intercept term. ==='</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Absolute Error: %0.02f'</span>  <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_absolute_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> torq_est<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Squared Error: %0.02f'</span>  <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> torq_est<span class="token punctuation">)</span>  <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Root Mean Squared Error %0.02f'</span> <span class="token operator">%</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> torq_est<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n---- Using sklearn LinearRegression.pred(theta).   ========'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Absolute Error: %0.02f:'</span> <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_absolute_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Squared Error: %0.02f'</span> <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred2<span class="token punctuation">)</span>  <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Root Mean Squared Error: %0.02f'</span> <span class="token operator">%</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n---- Using sklearn Ridge.pred(theta).   ========'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Absolute Error: %0.02f'</span> <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_absolute_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred<span class="token punctuation">)</span><span class="token punctuation">)</span>  
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Mean Squared Error: %0.02f'</span> <span class="token operator">%</span> metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred<span class="token punctuation">)</span>  <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Root Mean Squared Error: %0.02f'</span> <span class="token operator">%</span> np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>metrics<span class="token punctuation">.</span>mean_squared_error<span class="token punctuation">(</span>torq<span class="token punctuation">,</span> yPred<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n --- LinRegr has the best fit ----'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\nNote: torques about y axis: Min'</span><span class="token punctuation">,</span> myy<span class="token punctuation">.</span>min<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'; Max'</span><span class="token punctuation">,</span> myy<span class="token punctuation">.</span>max<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'grams * cm'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n======================'</span><span class="token punctuation">)</span>
+
+</code></pre>
+</div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Sanity-Check"><span class="toc-number">1.</span> <span class="toc-text">Sanity Check</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Questions"><span class="toc-number">2.</span> <span class="toc-text">Questions</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Plots"><span class="toc-number">3.</span> <span class="toc-text">Plots</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Torque-Estimated"><span class="toc-number">3.1.</span> <span class="toc-text">Torque Estimated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Force"><span class="toc-number">3.2.</span> <span class="toc-text">Force</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thetas"><span class="toc-number">3.3.</span> <span class="toc-text">Thetas</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Positions"><span class="toc-number">3.4.</span> <span class="toc-text">Positions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Math"><span class="toc-number">3.5.</span> <span class="toc-text">Math</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Thought-Process"><span class="toc-number">4.</span> <span class="toc-text">Thought Process</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Interpretation"><span class="toc-number">5.</span> <span class="toc-text">Interpretation</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Todo"><span class="toc-number">6.</span> <span class="toc-text">Todo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Project-Timeline-tracking"><span class="toc-number">6.1.</span> <span class="toc-text">Project Timeline tracking</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code-Reference"><span class="toc-number">6.2.</span> <span class="toc-text">Code Reference</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&text=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&is_video=false&description=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Plotting Residuals (now with ~492 datapoints)&body=Check out this article: http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&title=Plotting Residuals (now with ~492 datapoints)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://orangenarwhals.github.io/howe299r_blog/2018/04/10/Plotting-Residuals-now-with-492-datapoints/&name=Plotting Residuals (now with ~492 datapoints)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2018 N Ouyang
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/howe299r_blog/">Home</a></li>
+         
+          <li><a href="/howe299r_blog/about/">About</a></li>
+         
+          <li><a href="/howe299r_blog/archives/">Blog</a></li>
+         
+          <li><a href="/howe299r_blog/search/">Search</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
+<!-- styles -->
+<link rel="stylesheet" href="/howe299r_blog/lib/font-awesome/css/fontawesome-all.min.css">
+<link rel="stylesheet" href="/howe299r_blog/lib/justified-gallery/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+<script src="/howe299r_blog/lib/jquery/jquery.min.js"></script>
+<script src="/howe299r_blog/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/howe299r_blog/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
